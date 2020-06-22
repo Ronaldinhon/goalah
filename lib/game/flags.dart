@@ -22,6 +22,7 @@ class Flags extends SpriteComponent {
     anchor = Anchor.topRight;
     x = position.dx;
     y = position.dy;
+    pos();
   }
 
   @override
@@ -36,5 +37,9 @@ class Flags extends SpriteComponent {
 
   Rect area() {
     return Rect.fromLTWH(x - width, y - height, width, height);
+  }
+
+  void pos() {
+    y = (game.screenSize.height * 0.09 * 0.5) - (height / 2) ;
   }
 }

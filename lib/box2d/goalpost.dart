@@ -86,7 +86,7 @@ class Goalpost extends BodyComponent {
 
     net =
         Goalscore(game, halfWidth - 12, tilesize + 10, bodyPos + Offset(6, 4));
-    teleport();
+    teleport1();
   }
 
   @override
@@ -133,6 +133,15 @@ class Goalpost extends BodyComponent {
   }
 
   void teleport() {
+    move();
+    game.countDown.resetCDown();
+  }
+
+  void teleport1() {
+    move();
+  }
+
+  void move() {
     var ypos = vecToOffset(body.position).dy;
     var randomX = Random().nextDouble() * xRange;
     body.setTransform(offsetToVec(Offset(randomX, ypos)), 0);

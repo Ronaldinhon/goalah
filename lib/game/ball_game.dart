@@ -11,6 +11,7 @@ import 'pointer.dart';
 import 'shadow.dart';
 import 'self_flag.dart';
 import 'flags.dart';
+import 'cd_timer.dart';
 import '../box2d/football.dart';
 import '../box2d/balancer.dart';
 import '../box2d/box2d_world.dart';
@@ -40,7 +41,6 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   double xCenterRight;
   bool dragEnd = true;
 
-  double speedo = 4.5;
   double unitWidth;
 
   BasicWorld basicWorld;
@@ -54,7 +54,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   Pointer pointer;
   SelfFlag selfFlag;
   Flags flags;
-  static const oneSec = Duration(seconds: 1);
+  CdTimer countDown;
 
   BallGame(size) {
     resize(size);
@@ -75,17 +75,17 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     unitWidth = (screenSize.width - (6 * 5)) / 6;
 
     countryList = countryCodes();
-    add(flags = Flags(this,
-        screenSize.height * 0.104,
-        screenSize.height * 0.064,
+    add(flags = Flags(this, screenSize.height * 0.104, screenSize.height * 0.064,
         Offset(screenSize.width * 0.96, screenSize.height * 0.018)));
     add(selfFlag = SelfFlag(
         this,
-        screenSize.height * 0.104,
-        screenSize.height * 0.064,
+        screenSize.width * 0.244,
+        screenSize.width * 0.144,
         Offset(screenSize.width * 0.96, screenSize.height * 0.94)));
-
+    add(countDown = CdTimer(this, '3.0s',  
+        Offset(screenSize.width * 0.96 - (selfFlag.width + 15), screenSize.height * 0.94)));
     add(Score(this, 'Goals: 0', Offset(10, 15)));
+
     basicWorld = BasicWorld(this, screenSize);
     basicWorld.initializeWorld();
     add(basicWorld);

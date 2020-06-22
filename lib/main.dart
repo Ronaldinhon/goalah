@@ -54,11 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  @override
-  void initState() {
-    newGame();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   newGame();
+  //   super.initState();
+  // }
 
   dynamic newGame() async {
     Util flameUtil = Util();
