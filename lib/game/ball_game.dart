@@ -11,9 +11,9 @@ import 'pointer.dart';
 import 'shadow.dart';
 import 'self_flag.dart';
 import 'flags.dart';
-import 'box2d/football.dart';
-import 'box2d/balancer.dart';
-import 'box2d/box2d_world.dart';
+import '../box2d/football.dart';
+import '../box2d/balancer.dart';
+import '../box2d/box2d_world.dart';
 import 'db_helper.dart';
 
 import 'dart:async' as time;

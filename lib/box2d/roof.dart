@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flame/box2d/box2d_component.dart';
 import 'package:box2d_flame/box2d.dart';
 
-import '../helper.dart';
+import '../game/helper.dart';
 import 'box2d_world.dart';
 
 class Roof extends BodyComponent {

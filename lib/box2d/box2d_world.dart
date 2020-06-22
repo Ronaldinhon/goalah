@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flame/box2d/box2d_component.dart';
 import 'package:box2d_flame/box2d.dart';
 
-import '../ball_game.dart';
+import '../game/ball_game.dart';
 import 'roof.dart';
 import 'balancer.dart';
 import 'my_contactlistener.dart';

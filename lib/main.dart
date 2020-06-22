@@ -3,7 +3,7 @@ import 'package:flame/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'ball_game.dart';
+import 'game/ball_game.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

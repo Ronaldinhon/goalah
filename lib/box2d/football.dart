@@ -6,7 +6,7 @@ import 'package:box2d_flame/box2d.dart';
 import 'package:flutter/gestures.dart';
 
 // import '../ball_game.dart';
-import '../helper.dart';
+import '../game/helper.dart';
 import 'box2d_world.dart';
 
 class Football extends BodyComponent {

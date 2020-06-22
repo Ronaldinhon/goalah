@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'box2d_world.dart';
-import '../ball_game.dart';
-import '../helper.dart';
+import '../game/ball_game.dart';
+import '../game/helper.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flame/box2d/box2d_component.dart';
