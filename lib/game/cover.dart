@@ -8,21 +8,22 @@ import 'package:flutter/gestures.dart';
 import 'ball_game.dart';
 import 'db_helper.dart';
 
-class Flags extends SpriteComponent {
+class Cover extends SpriteComponent {
   final BallGame game;
   final Offset position;
-  int selected = -1;
+  double recordHeight;
 
-  Flags(
+  Cover(
     this.game,
     double width,
     double height,
     this.position,
-  ) : super.fromSprite(width, height, Sprite('grey.png')) {
+  ) : super.fromSprite(width, height, Sprite('shadow.png')) {
     anchor = Anchor.topRight;
     x = position.dx;
     y = position.dy;
-    pos();
+    recordHeight = height;
+    updateCover();
   }
 
   @override
@@ -30,16 +31,14 @@ class Flags extends SpriteComponent {
     super.update(dt);
   }
 
-  void updateFlag() {
-    ++selected;
-    sprite = Sprite(game.countryList[selected] + '.png');
+  @override
+  void render(Canvas c) {
+    if (game.score > 0) {
+      super.render(c);
+    }
   }
 
-  Rect area() {
-    return Rect.fromLTWH(x - width, y, width, height);
-  }
-
-  void pos() {
-    y = (game.screenSize.height * 0.09 * 0.5) - (height / 2) ;
+  void updateCover() {
+    height = ((21 - (game.score ~/ 10)) / 21) * recordHeight;
   }
 }

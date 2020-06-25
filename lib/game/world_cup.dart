@@ -8,21 +8,19 @@ import 'package:flutter/gestures.dart';
 import 'ball_game.dart';
 import 'db_helper.dart';
 
-class Flags extends SpriteComponent {
+class WorldCup extends SpriteComponent {
   final BallGame game;
   final Offset position;
-  int selected = -1;
 
-  Flags(
+  WorldCup(
     this.game,
     double width,
     double height,
     this.position,
-  ) : super.fromSprite(width, height, Sprite('grey.png')) {
-    anchor = Anchor.topRight;
+  ) : super.fromSprite(width, height, Sprite('worldcup.png')) {
+    anchor = Anchor.bottomRight;
     x = position.dx;
     y = position.dy;
-    pos();
   }
 
   @override
@@ -30,16 +28,7 @@ class Flags extends SpriteComponent {
     super.update(dt);
   }
 
-  void updateFlag() {
-    ++selected;
-    sprite = Sprite(game.countryList[selected] + '.png');
-  }
-
   Rect area() {
-    return Rect.fromLTWH(x - width, y, width, height);
-  }
-
-  void pos() {
-    y = (game.screenSize.height * 0.09 * 0.5) - (height / 2) ;
+    return Rect.fromLTWH(x - width, y - height, width, height);
   }
 }

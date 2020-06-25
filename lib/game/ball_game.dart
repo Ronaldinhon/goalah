@@ -12,6 +12,9 @@ import 'shadow.dart';
 import 'self_flag.dart';
 import 'flags.dart';
 import 'cd_timer.dart';
+import 'world_cup.dart';
+import 'cover.dart';
+import 'start_score.dart';
 import '../box2d/football.dart';
 import '../box2d/balancer.dart';
 import '../box2d/box2d_world.dart';
@@ -55,6 +58,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   SelfFlag selfFlag;
   Flags flags;
   CdTimer countDown;
+  Cover cover;
 
   BallGame(size) {
     resize(size);
@@ -75,15 +79,33 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     unitWidth = (screenSize.width - (6 * 5)) / 6;
 
     countryList = countryCodes();
-    add(flags = Flags(this, screenSize.height * 0.104, screenSize.height * 0.064,
+    add(flags = Flags(
+        this,
+        screenSize.height * 0.104,
+        screenSize.height * 0.064,
         Offset(screenSize.width * 0.96, screenSize.height * 0.018)));
     add(selfFlag = SelfFlag(
         this,
         screenSize.width * 0.244,
         screenSize.width * 0.144,
         Offset(screenSize.width * 0.96, screenSize.height * 0.94)));
-    add(countDown = CdTimer(this, '3.0s',  
-        Offset(screenSize.width * 0.96 - (selfFlag.width + 15), screenSize.height * 0.94)));
+    add(WorldCup(
+        this,
+        screenSize.width * 0.056,
+        screenSize.width * 0.144,
+        Offset((screenSize.width * (0.96 - 0.244)) - 20,
+            screenSize.height * 0.94)));
+    add(cover = Cover(
+        this,
+        screenSize.width * 0.056,
+        screenSize.width * 0.144,
+        Offset((screenSize.width * (0.96 - 0.244)) - 20,
+            (screenSize.height * 0.94) - (screenSize.width * 0.144))));
+    add(countDown = CdTimer(
+        this,
+        '3.0s',
+        Offset(screenSize.width * 0.96 - (selfFlag.width + 5),
+            screenSize.height * 0.94)));
     add(Score(this, 'Goals: 0', Offset(10, 15)));
 
     basicWorld = BasicWorld(this, screenSize);
@@ -115,6 +137,8 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         Offset(screenSize.width / 2, (screenSize.height * 0.93))));
     add(pointer = Pointer(this, tileSizeX, tileSizeX,
         Offset(screenSize.width / 2, screenSize.height * 0.9)));
+    add(StartScore(this, screenSize.width / 2, screenSize.width / 5,
+        Offset(screenSize.width / 2, screenSize.height * 0.32)));
   }
 
   void resize(Size size) {

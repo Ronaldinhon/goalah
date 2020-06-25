@@ -57,6 +57,8 @@ flutter:
     - assets/images/grey.png
     - assets/images/worldcup.png
     - assets/images/goalscore.png
+    - assets/images/score_to_start.png
+    - assets/images/choose_country.png
     - assets/images/yem.png
     - assets/images/zam.png
     - assets/images/zim.png
