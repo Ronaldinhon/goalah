@@ -52,7 +52,7 @@ class Pointer extends SpriteComponent {
   }
 
   void render(Canvas c) {
-    if (game.status == Status.Playing) {
+    if (game.status == Status.Playing && game.score == 0) {
       c.drawLine(
           offsets[0] - Offset(0, height / 2),
           offsets[1] - Offset(0, height / 2),

@@ -12,9 +12,9 @@ class CdTimer extends TextComponent {
   final BallGame game;
   final Offset position;
   final String lol;
-  Timer _pointOnes = Timer.periodic(Duration(seconds: 60), (timer) {});
   Stopwatch stopwatch = Stopwatch();
   double loop = 3.0;
+  bool stopped = false;
 
   CdTimer(
     this.game,
@@ -40,17 +40,14 @@ class CdTimer extends TextComponent {
   }
 
   void resetCDown() {
-    // loop = 3.0;
-    // _pointOnes = Timer.periodic(Duration(milliseconds: 100), (timer) {
-    //   loop -= 0.1;
-    // });
     stopwatch.reset();
     stopwatch.start();
+    stopped = false;
   }
 
   void stopTimer() {
-    // _pointOnes.cancel();
     stopwatch.stop();
+    stopped = true;
   }
 
   void pos() {

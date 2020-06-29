@@ -1,30 +1,30 @@
 import 'dart:ui';
 
-import 'package:flame/components/component.dart';
 import 'package:flame/anchor.dart';
+import 'package:flame/components/component.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/gestures.dart';
 
 import 'ball_game.dart';
-import 'db_helper.dart';
 
-class StartScore extends SpriteComponent {
+class Arrow extends SpriteComponent {
   final BallGame game;
   final Offset position;
+  String selected;
   bool troy = false;
+  double oriY;
   Curve bIn = Curves.bounceIn;
   double cubicTime = 0.28;
-  double oriY;
   bool up;
 
-  StartScore(
+  Arrow(
     this.game,
     double width,
     double height,
     this.position,
-  ) : super.fromSprite(width, height, Sprite('score_to_start.png')) {
-    anchor = Anchor.center;
+  ) : super.fromSprite(width, height, Sprite('down_arrow.png')) {
+    anchor = Anchor.bottomCenter;
     x = position.dx;
     y = position.dy;
     oriY = position.dy;
@@ -43,17 +43,12 @@ class StartScore extends SpriteComponent {
     } else {
       cubicTime -= dt * 0.35;
     }
-    // print(bIn.transform(cubicTime));
-    var pain = Paint()..color = Color.fromRGBO(255, 255, 255, 0.35 + (bIn.transform(cubicTime) * 2.6));
-    sprite = Sprite('score_to_start.png')
-      ..paint = pain;
-    // y = oriY + (bIn.transform(cubicTime) * 49);
+    y = oriY - (bIn.transform(cubicTime) * (game.screenSize.width * 0.08));
     super.update(dt);
   }
 
-  @override
   void render(Canvas c) {
-    if (game.status == Status.Playing && game.score == 0) {
+    if (game.status == Status.PendingCountry) {
       super.render(c);
     }
   }

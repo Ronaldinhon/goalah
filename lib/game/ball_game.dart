@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:fbr_dwc/game/arrow.dart';
+import 'package:fbr_dwc/game/pick_country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 // import 'package:flame/components/component.dart';
@@ -59,6 +61,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   Flags flags;
   CdTimer countDown;
   Cover cover;
+  bool overlayShown = false;
 
   BallGame(size) {
     resize(size);
@@ -88,19 +91,27 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         this,
         screenSize.width * 0.244,
         screenSize.width * 0.144,
-        Offset(screenSize.width * 0.96, screenSize.height * 0.94)));
+        Offset(screenSize.width * 0.96, screenSize.height * 0.87)));
+    add(PickCountry(this, screenSize.width * 0.34, screenSize.width * 0.2,
+        Offset(screenSize.width * 0.96, screenSize.height * 0.8)));
+    add(Arrow(
+        this,
+        screenSize.width * 0.08,
+        screenSize.width * 0.08,
+        Offset(screenSize.width * (0.96 - (0.244 / 2)),
+            screenSize.height * 0.858)));
     add(WorldCup(
         this,
         screenSize.width * 0.056,
         screenSize.width * 0.144,
         Offset((screenSize.width * (0.96 - 0.244)) - 20,
-            screenSize.height * 0.94)));
+            screenSize.height * 0.87)));
     add(cover = Cover(
         this,
         screenSize.width * 0.056,
         screenSize.width * 0.144,
         Offset((screenSize.width * (0.96 - 0.244)) - 20,
-            (screenSize.height * 0.94) - (screenSize.width * 0.144))));
+            (screenSize.height * 0.87))));
     add(countDown = CdTimer(
         this,
         '3.0s',
@@ -163,7 +174,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     if ((status == Status.PendingCountry ||
             (status == Status.Playing && score == 0)) &&
         selfFlag.area().contains(details.globalPosition)) {
-      status = Status.PendingCountry;
+      // status = Status.PendingCountry;
       addWidgetOverlay('dropdown', dropdown());
     }
   }
@@ -180,8 +191,9 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     if ((status == Status.PendingCountry ||
             (status == Status.Playing && score == 0)) &&
         selfFlag.area().contains(details.globalPosition)) {
-      status = Status.PendingCountry;
+      // status = Status.PendingCountry;
       addWidgetOverlay('dropdown', dropdown());
+      overlayShown = true;
     }
     // print('down'); - too bottom & right dont detect very good
   }
@@ -209,6 +221,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
                       onChanged: (String newValue) {
                         selfFlag.setFlag(newValue);
                         removeWidgetOverlay('dropdown');
+                        overlayShown = false;
                       },
                       items: myJson().map((Map map) {
                         return new DropdownMenuItem<String>(

@@ -20,7 +20,7 @@ class SelfFlag extends SpriteComponent {
     double height,
     this.position,
   ) : super.fromSprite(width, height, Sprite('grey.png')) {
-    anchor = Anchor.bottomRight;
+    anchor = Anchor.topRight;
     x = position.dx;
     y = position.dy;
     getCountry();
@@ -61,6 +61,6 @@ class SelfFlag extends SpriteComponent {
   }
 
   Rect area() {
-    return Rect.fromLTWH(x - width, y - height, width, height);
+    return Rect.fromLTWH(x - width, y, width, height);
   }
 }

@@ -32,7 +32,7 @@ class Plshadow extends SpriteComponent {
   }
 
   void render(Canvas c) {
-    if (game.status == Status.Playing) {
+    if (game.status == Status.Playing && game.score == 0) {
       super.render(c);
     }
   }

@@ -134,7 +134,7 @@ class Goalpost extends BodyComponent {
 
   void teleport() {
     move();
-    game.countDown.resetCDown();
+    // game.countDown.resetCDown();
   }
 
   void teleport1() {

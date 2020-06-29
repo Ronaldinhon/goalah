@@ -6,29 +6,37 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 
 import 'ball_game.dart';
-import 'db_helper.dart';
 
-class WorldCup extends SpriteComponent {
+class PickCountry extends SpriteComponent {
   final BallGame game;
   final Offset position;
+  String selected;
+  bool troy = false;
 
-  WorldCup(
+  PickCountry(
     this.game,
     double width,
     double height,
     this.position,
-  ) : super.fromSprite(width, height, Sprite('worldcup.png')) {
-    anchor = Anchor.topRight;
+  ) : super.fromSprite(width, height, Sprite('choose_country.png')) {
+    anchor = Anchor.bottomRight;
     x = position.dx;
     y = position.dy;
   }
 
   @override
   void update(double dt) {
+    if (game.score > 0) troy = true;
     super.update(dt);
   }
 
-  Rect area() {
-    return Rect.fromLTWH(x - width, y - height, width, height);
+  void render(Canvas c) {
+    if (game.status == Status.PendingCountry) {
+      super.render(c);
+    }
+  }
+
+  bool destroy() {
+    return troy;
   }
 }

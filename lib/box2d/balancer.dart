@@ -66,7 +66,7 @@ class Balancer extends BodyComponent {
 
   @override
   void update(double t) {
-    if (game.status == Status.Playing) {
+    if (game.status == Status.Playing && !game.overlayShown) {
       bodyPos = vecToOffset(body.position);
       // actually i'm doing this for dy only
       Offset targetOffset =
@@ -82,14 +82,18 @@ class Balancer extends BodyComponent {
 
       double supposedAngle = 0;
       if (!game.dragEnd) {
-        if (game.currentDrag.dx < game.xCenterLeft) {
-          supposedAngle = (game.xCenterLeft - game.currentDrag.dx) /
-              (game.tileSizeX * 7) *
-              0.85;
-        } else if (game.currentDrag.dx > game.xCenterRight) {
-          supposedAngle = (game.currentDrag.dx - game.xCenterRight) /
-              (game.tileSizeX * 7) *
-              -0.85;
+        var dxMan = game.currentDrag.dx;
+        if (dxMan < 0) {
+          dxMan = 0;
+        } else if (dxMan > screenSize.width) {
+          dxMan = screenSize.width;
+        }
+        if (dxMan < game.xCenterLeft) {
+          supposedAngle =
+              (game.xCenterLeft - dxMan) / (game.tileSizeX * 7) * 0.85;
+        } else if (dxMan > game.xCenterRight) {
+          supposedAngle =
+              (dxMan - game.xCenterRight) / (game.tileSizeX * 7) * -0.85;
         }
       }
       if (body.getAngle() != supposedAngle) {
