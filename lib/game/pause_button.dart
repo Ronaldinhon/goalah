@@ -7,17 +7,16 @@ import 'package:flutter/gestures.dart';
 
 import 'ball_game.dart';
 
-class Flags extends SpriteComponent {
+class PauseButton extends SpriteComponent {
   final BallGame game;
   final Offset position;
-  int selected = -1;
 
-  Flags(
+  PauseButton(
     this.game,
     double width,
     double height,
     this.position,
-  ) : super.fromSprite(width, height, Sprite('grey.png')) {
+  ) : super.fromSprite(width, height, Sprite('pause_button.png')) {
     anchor = Anchor.topRight;
     x = position.dx;
     y = position.dy;
@@ -27,11 +26,6 @@ class Flags extends SpriteComponent {
   @override
   void update(double dt) {
     super.update(dt);
-  }
-
-  void updateFlag() {
-    ++selected;
-    sprite = Sprite(game.countryList[selected] + '.png');
   }
 
   Rect area() {

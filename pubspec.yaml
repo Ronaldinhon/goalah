@@ -60,6 +60,7 @@ flutter:
     - assets/images/score_to_start.png
     - assets/images/choose_country.png
     - assets/images/down_arrow.png
+    - assets/images/pause_button.png
     - assets/images/yem.png
     - assets/images/zam.png
     - assets/images/zim.png

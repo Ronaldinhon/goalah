@@ -26,9 +26,15 @@ class BasicWorld extends Box2DComponent {
   Goalpost goalpost;
   double unitWidth;
 
-  BasicWorld(game, Size size) : super(scale: 1.0) {
+  double dta;
+  int velocityIterationsa;
+  int positionIterationsa;
+
+  // int velocityIterations;
+  // int positionIterations;
+
+  BasicWorld(this.ballGame, Size size) : super(scale: 1.0) {
     screenSize = size;
-    ballGame = game;
   }
 
   @override
@@ -47,6 +53,32 @@ class BasicWorld extends Box2DComponent {
     unitWidth = ballGame.unitWidth;
 
     world.setContactListener(myContactListener = MyContactListener(this));
+    dta = world.step.dt;
+    velocityIterationsa = world.step.velocityIterations;
+    positionIterationsa = world.step.positionIterations;
+    print(dta);
+    // print(velocityIterationsa);
+    // print(positionIterationsa);
+  }
+
+  void pause() {
+    // print('here');
+    // world.stack.forEach((bod) {
+    //   bod.setActive(false);
+    // });
+    baller.body.setActive(false);
+    balance.body.setActive(false);
+    // world.stepDt(0, 5, 5);
+    // velocityIterations = null;
+    // positionIterations = null;
+  }
+
+  void resume() {
+    // world.stepDt(0, velocityIterationsa, positionIterationsa);
+    ballGame.countDown.resetCDown();
+    ballGame.countDown.paused = false;
+    baller.body.setActive(true);
+    balance.body.setActive(true);
   }
 }
 

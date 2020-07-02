@@ -15,6 +15,7 @@ class CdTimer extends TextComponent {
   Stopwatch stopwatch = Stopwatch();
   double loop = 3.0;
   bool stopped = false;
+  bool paused = false;
 
   CdTimer(
     this.game,
@@ -35,6 +36,12 @@ class CdTimer extends TextComponent {
     } else {
       config = TextConfig(color: Color.fromARGB(255, 255, 0, 0));
     }
+    // if (remainingTime < 0) game.basicWorld.world.stepDt(0, 1, 1);
+    if (remainingTime < 0 && !paused) {
+      game.basicWorld.pause();
+      paused = true;
+    } 
+    // print(game.basicWorld.world.step.dt);
     text = remainingTime.toStringAsFixed(1) + 's';
     super.update(dt);
   }

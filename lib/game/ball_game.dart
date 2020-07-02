@@ -1,6 +1,4 @@
 import 'dart:ui';
-import 'package:fbr_dwc/game/arrow.dart';
-import 'package:fbr_dwc/game/pick_country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 // import 'package:flame/components/component.dart';
@@ -17,6 +15,9 @@ import 'cd_timer.dart';
 import 'world_cup.dart';
 import 'cover.dart';
 import 'start_score.dart';
+import 'arrow.dart';
+import 'pause_button.dart';
+import 'pick_country.dart';
 import '../box2d/football.dart';
 import '../box2d/balancer.dart';
 import '../box2d/box2d_world.dart';
@@ -62,6 +63,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   CdTimer countDown;
   Cover cover;
   bool overlayShown = false;
+  PauseButton pause;
 
   BallGame(size) {
     resize(size);
@@ -115,8 +117,14 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     add(countDown = CdTimer(
         this,
         '3.0s',
-        Offset(screenSize.width * 0.96 - (selfFlag.width + 5),
+        Offset(screenSize.width * 0.96 - (selfFlag.width),
             screenSize.height * 0.94)));
+    add(pause = PauseButton(
+        this,
+        screenSize.height * 0.06,
+        screenSize.height * 0.06,
+        Offset(screenSize.width * 0.96 - (selfFlag.width + countDown.width + 5),
+            screenSize.height * 0.018)));
     add(Score(this, 'Goals: 0', Offset(10, 15)));
 
     basicWorld = BasicWorld(this, screenSize);
@@ -195,6 +203,11 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
       addWidgetOverlay('dropdown', dropdown());
       overlayShown = true;
     }
+    if (status == Status.Playing &&
+        pause.area().contains(details.globalPosition)) {
+          basicWorld.resume();
+          print('sini');
+        }
     // print('down'); - too bottom & right dont detect very good
   }
 
