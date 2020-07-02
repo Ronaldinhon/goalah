@@ -1,48 +1,53 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flame/components/text_component.dart';
+import 'package:flame/components/component.dart';
+// import 'package:flame/components/text_component.dart';
 import 'package:flame/anchor.dart';
-import 'package:flame/text_config.dart';
+import 'package:flame/sprite.dart';
+// import 'package:flame/text_config.dart';
 import 'package:flutter/gestures.dart';
 
 import 'ball_game.dart';
 
-class CdTimer extends TextComponent {
+class CdTimer extends SpriteComponent {
   final BallGame game;
   final Offset position;
-  final String lol;
+  final double width;
+  final double height;
+  // final String lol;
   Stopwatch stopwatch = Stopwatch();
-  double loop = 3.0;
+  int loop = 6;
   bool stopped = false;
   bool paused = false;
 
   CdTimer(
     this.game,
-    this.lol,
+    this.width,
+    this.height,
     this.position,
-  ) : super(lol) {
+  ) : super.fromSprite(width, height, Sprite('0.png')) {
     x = position.dx;
     y = position.dy;
-    anchor = Anchor.topRight;
+    anchor = Anchor.topCenter;
     pos();
   }
 
   @override
   void update(double dt) {
-    var remainingTime = loop - (stopwatch.elapsedMilliseconds / 1000);
-    if (remainingTime > 0.5) {
-      config = TextConfig(color: Color.fromARGB(255, 0, 0, 0));
-    } else {
-      config = TextConfig(color: Color.fromARGB(255, 255, 0, 0));
-    }
-    // if (remainingTime < 0) game.basicWorld.world.stepDt(0, 1, 1);
-    if (remainingTime < 0 && !paused) {
+    var remainingTime = loop - (stopwatch.elapsedMilliseconds ~/ 500);
+    // if (remainingTime >= 4) {
+    //   config = TextConfig(color: Color.fromARGB(255, 0, 0, 0));
+    // } else {
+    //   config = TextConfig(color: Color.fromARGB(255, 255, 0, 0));
+    // }
+    if (remainingTime <= 0) remainingTime = 0;
+    if (remainingTime <= 0 && !paused) {
       game.basicWorld.pause();
       paused = true;
     } 
-    // print(game.basicWorld.world.step.dt);
-    text = remainingTime.toStringAsFixed(1) + 's';
+    // text = remainingTime.toString();
+    sprite = Sprite(remainingTime.toString() + '.png');
     super.update(dt);
   }
 

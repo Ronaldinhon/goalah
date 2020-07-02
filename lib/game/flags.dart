@@ -18,7 +18,7 @@ class Flags extends SpriteComponent {
     double height,
     this.position,
   ) : super.fromSprite(width, height, Sprite('grey.png')) {
-    anchor = Anchor.topRight;
+    anchor = Anchor.topLeft;
     x = position.dx;
     y = position.dy;
     pos();

@@ -84,15 +84,23 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     unitWidth = (screenSize.width - (6 * 5)) / 6;
 
     countryList = countryCodes();
+    add(countDown = CdTimer(
+        this,
+        screenSize.height * 0.03,
+        screenSize.height * 0.05,
+        Offset(screenSize.width * 0.5, screenSize.height * 0.94)));
     add(flags = Flags(
         this,
-        screenSize.height * 0.104,
-        screenSize.height * 0.064,
-        Offset(screenSize.width * 0.96, screenSize.height * 0.018)));
+        // screenSize.height * 0.104,
+        // screenSize.height * 0.064,
+        screenSize.width * 0.23,
+        screenSize.width * 0.13,
+        Offset((screenSize.width * 0.56) + (countDown.width / 2),
+            screenSize.height * 0.018)));
     add(selfFlag = SelfFlag(
         this,
-        screenSize.width * 0.244,
-        screenSize.width * 0.144,
+        screenSize.width * 0.23,
+        screenSize.width * 0.14,
         Offset(screenSize.width * 0.96, screenSize.height * 0.87)));
     add(PickCountry(this, screenSize.width * 0.34, screenSize.width * 0.2,
         Offset(screenSize.width * 0.96, screenSize.height * 0.8)));
@@ -114,17 +122,11 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         screenSize.width * 0.144,
         Offset((screenSize.width * (0.96 - 0.244)) - 20,
             (screenSize.height * 0.87))));
-    add(countDown = CdTimer(
-        this,
-        '3.0s',
-        Offset(screenSize.width * 0.96 - (selfFlag.width),
-            screenSize.height * 0.94)));
     add(pause = PauseButton(
         this,
         screenSize.height * 0.06,
         screenSize.height * 0.06,
-        Offset(screenSize.width * 0.96 - (selfFlag.width + countDown.width + 5),
-            screenSize.height * 0.018)));
+        Offset(screenSize.width - 6, screenSize.height * 0.018)));
     add(Score(this, 'Goals: 0', Offset(10, 15)));
 
     basicWorld = BasicWorld(this, screenSize);
@@ -205,9 +207,9 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     }
     if (status == Status.Playing &&
         pause.area().contains(details.globalPosition)) {
-          basicWorld.resume();
-          print('sini');
-        }
+      basicWorld.resume();
+      print('sini');
+    }
     // print('down'); - too bottom & right dont detect very good
   }
 

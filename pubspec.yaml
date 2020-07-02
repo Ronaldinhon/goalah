@@ -61,6 +61,34 @@ flutter:
     - assets/images/choose_country.png
     - assets/images/down_arrow.png
     - assets/images/pause_button.png
+    - assets/images/0.png
+    - assets/images/1.png
+    - assets/images/2.png
+    - assets/images/3.png
+    - assets/images/4.png
+    - assets/images/5.png
+    - assets/images/6.png
+    - assets/images/row-1.png
+    - assets/images/row-2.png
+    - assets/images/row-3.png
+    - assets/images/row-4.png
+    - assets/images/row-5.png
+    - assets/images/row-6.png
+    - assets/images/row-7.png
+    - assets/images/row-8.png
+    - assets/images/row-9.png
+    - assets/images/row-10.png
+    - assets/images/row-11.png
+    - assets/images/row-12.png
+    - assets/images/row-13.png
+    - assets/images/row-14.png
+    - assets/images/row-15.png
+    - assets/images/row-16.png
+    - assets/images/row-17.png
+    - assets/images/row-18.png
+    - assets/images/row-19.png
+    - assets/images/row-20.png
+    - assets/images/row-21.png
     - assets/images/yem.png
     - assets/images/zam.png
     - assets/images/zim.png

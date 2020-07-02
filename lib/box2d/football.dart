@@ -76,7 +76,7 @@ class Football extends BodyComponent {
           if (DateTime.now().difference(bottom).inMilliseconds >= 150) {
             Flame.audio.play('BouncingBall.mp3', volume: yImpact2d / 1.5);
           }
-          if (boxx.ballGame.countDown.stopped) boxx.ballGame.countDown.resetCDown();
+          // if (boxx.ballGame.countDown.stopped) boxx.ballGame.countDown.resetCDown();
           bottom = DateTime.now();
         } else if ([a, b].contains('left')) {
           if (DateTime.now().difference(left).inMilliseconds >= 150) {
