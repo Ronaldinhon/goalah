@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   BallGame _myGame;
 
   @override
@@ -54,11 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // @override
-  // void initState() {
-  //   newGame();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
 
   dynamic newGame() async {
     Util flameUtil = Util();
@@ -68,5 +68,16 @@ class _MyHomePageState extends State<MyHomePage> {
     Flame.audio.disableLog();
     _myGame = BallGame(size);
     return _myGame.widget;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('HeredidChangeAppLifecycleStatedidChangeAppLifecycleState');
+    if (state == AppLifecycleState.paused) {
+      if (_myGame.status == Status.Playing && _myGame.score > 0)
+        _myGame.pauseGame();
+    }
+
+    if (state == AppLifecycleState.resumed) {}
   }
 }

@@ -43,11 +43,14 @@ class StartScore extends SpriteComponent {
     } else {
       cubicTime -= dt * 0.35;
     }
-    // print(bIn.transform(cubicTime));
+    if (cubicTime <= 0.28) {
+      cubicTime = 0.28;
+    } else if (cubicTime >= 0.64) {
+      cubicTime = 0.64;
+    }
     var pain = Paint()..color = Color.fromRGBO(255, 255, 255, 0.35 + (bIn.transform(cubicTime) * 2.6));
     sprite = Sprite('score_to_start.png')
       ..paint = pain;
-    // y = oriY + (bIn.transform(cubicTime) * 49);
     super.update(dt);
   }
 

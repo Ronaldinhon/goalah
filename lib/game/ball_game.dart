@@ -18,6 +18,11 @@ import 'start_score.dart';
 import 'arrow.dart';
 import 'pause_button.dart';
 import 'pick_country.dart';
+import 'background_worldcup.dart';
+import 'pause_cover.dart';
+import 'play_button.dart';
+import 'resume_word.dart';
+import 'versus.dart';
 import '../box2d/football.dart';
 import '../box2d/balancer.dart';
 import '../box2d/box2d_world.dart';
@@ -32,8 +37,9 @@ import 'package:flame/components/parallax_component.dart';
 enum Status {
   PendingCountry,
   Playing,
-  Win,
+  Pause,
   Lost,
+  Win,
 }
 
 class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
@@ -64,6 +70,9 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   Cover cover;
   bool overlayShown = false;
   PauseButton pause;
+  BackgroundWorldcup backWorld;
+  PlayButton playButton;
+  Versus vs;
 
   BallGame(size) {
     resize(size);
@@ -94,7 +103,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         // screenSize.height * 0.104,
         // screenSize.height * 0.064,
         screenSize.width * 0.23,
-        screenSize.width * 0.13,
+        screenSize.width * 0.14,
         Offset((screenSize.width * 0.56) + (countDown.width / 2),
             screenSize.height * 0.018)));
     add(selfFlag = SelfFlag(
@@ -102,6 +111,11 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         screenSize.width * 0.23,
         screenSize.width * 0.14,
         Offset(screenSize.width * 0.96, screenSize.height * 0.87)));
+    add(backWorld = BackgroundWorldcup(
+        this,
+        screenSize.height * 0.2,
+        screenSize.height * 0,
+        Offset(screenSize.width / 2, screenSize.height * 0.8)));
     add(PickCountry(this, screenSize.width * 0.34, screenSize.width * 0.2,
         Offset(screenSize.width * 0.96, screenSize.height * 0.8)));
     add(Arrow(
@@ -128,6 +142,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         screenSize.height * 0.06,
         Offset(screenSize.width - 6, screenSize.height * 0.018)));
     add(Score(this, 'Goals: 0', Offset(10, 15)));
+    add(vs = Versus(this, Offset(10, (screenSize.height * 0.45) - 5)));
 
     basicWorld = BasicWorld(this, screenSize);
     basicWorld.initializeWorld();
@@ -160,6 +175,16 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         Offset(screenSize.width / 2, screenSize.height * 0.9)));
     add(StartScore(this, screenSize.width / 2, screenSize.width / 5,
         Offset(screenSize.width / 2, screenSize.height * 0.32)));
+    add(PauseCover(this, screenSize.width, screenSize.height, Offset.zero));
+    add(playButton = PlayButton(
+        this,
+        screenSize.width / 4,
+        screenSize.width / 4,
+        Offset(screenSize.width / 2, screenSize.height * 0.5)));
+    add(ResumeWord(
+        this,
+        Offset(screenSize.width / 2,
+            (screenSize.height * 0.5) + (playButton.height / 2) + 15)));
   }
 
   void resize(Size size) {
@@ -206,11 +231,28 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
       overlayShown = true;
     }
     if (status == Status.Playing &&
+        score > 0 &&
+        countDown.remainingTime > 0 &&
         pause.area().contains(details.globalPosition)) {
-      basicWorld.resume();
-      print('sini');
+      pauseGame();
     }
+    if (status == Status.Pause &&
+        playButton.area().contains(details.globalPosition)) {
+          resumeGame();
+        }
     // print('down'); - too bottom & right dont detect very good
+  }
+
+  void pauseGame() {
+    countDown.stopTimer();
+    basicWorld.pause();
+    status = Status.Pause;
+  }
+
+  void resumeGame() {
+    countDown.resume();
+    basicWorld.resume();
+    status = Status.Playing;
   }
 
   Widget dropdown() {

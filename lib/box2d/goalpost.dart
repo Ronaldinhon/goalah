@@ -147,6 +147,7 @@ class Goalpost extends BodyComponent {
     body.setTransform(offsetToVec(Offset(randomX, ypos)), 0);
     net.x = randomX + 6;
     game.flags.updateFlag();
+    game.vs.updateVersus();
   }
 
   double bottomY() {

@@ -12,7 +12,7 @@ import 'helper.dart';
 class SelfFlag extends SpriteComponent {
   final BallGame game;
   final Offset position;
-  String selected;
+  String selected = '___';
 
   SelfFlag(
     this.game,
@@ -58,6 +58,7 @@ class SelfFlag extends SpriteComponent {
     game.countryList = codeList;
     game.flags.selected = -1;
     game.flags.updateFlag();
+    game.vs.updateVersus();
   }
 
   Rect area() {

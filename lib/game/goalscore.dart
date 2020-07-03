@@ -40,6 +40,7 @@ class Goalscore extends SpriteComponent {
       game.basicWorld.goalpost.tele = true;
       game.countDown.stopTimer();
       game.cover.updateCover();
+      game.backWorld.updateHeight();
       // Flame.audio.play *ding
     }
     super.update(dt);

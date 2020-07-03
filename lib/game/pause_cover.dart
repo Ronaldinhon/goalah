@@ -7,22 +7,21 @@ import 'package:flutter/gestures.dart';
 
 import 'ball_game.dart';
 
-class Flags extends SpriteComponent {
+class PauseCover extends SpriteComponent {
   final BallGame game;
   final Offset position;
   int selected = -1;
-  String selectedCountry;
+  static Paint pain = Paint()..color = Color.fromRGBO(255, 255, 255, 0.65);
 
-  Flags(
+  PauseCover(
     this.game,
     double width,
     double height,
     this.position,
-  ) : super.fromSprite(width, height, Sprite('grey.png')) {
-    anchor = Anchor.topLeft;
+  ) : super.fromSprite(width, height, Sprite('grey.png')..paint = pain) {
+    // anchor = Anchor.bottomCenter;
     x = position.dx;
     y = position.dy;
-    pos();
   }
 
   @override
@@ -30,17 +29,8 @@ class Flags extends SpriteComponent {
     super.update(dt);
   }
 
-  void updateFlag() {
-    ++selected;
-    selectedCountry = game.countryList[selected];
-    sprite = Sprite(selectedCountry + '.png');
-  }
-
-  Rect area() {
-    return Rect.fromLTWH(x - width, y, width, height);
-  }
-
-  void pos() {
-    y = (game.screenSize.height * 0.09 * 0.5) - (height / 2) ;
+  @override
+  void render(Canvas c) {
+    if (game.status == Status.Pause) super.render(c);
   }
 }

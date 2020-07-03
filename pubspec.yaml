@@ -61,6 +61,7 @@ flutter:
     - assets/images/choose_country.png
     - assets/images/down_arrow.png
     - assets/images/pause_button.png
+    - assets/images/play_button.png
     - assets/images/0.png
     - assets/images/1.png
     - assets/images/2.png

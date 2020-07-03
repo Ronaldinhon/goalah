@@ -43,6 +43,11 @@ class Arrow extends SpriteComponent {
     } else {
       cubicTime -= dt * 0.35;
     }
+    if (cubicTime <= 0.28) {
+      cubicTime = 0.28;
+    } else if (cubicTime >= 0.64) {
+      cubicTime = 0.64;
+    }
     y = oriY - (bIn.transform(cubicTime) * (game.screenSize.width * 0.08));
     super.update(dt);
   }

@@ -1,11 +1,8 @@
-import 'dart:async';
 import 'dart:ui';
 
 import 'package:flame/components/component.dart';
-// import 'package:flame/components/text_component.dart';
 import 'package:flame/anchor.dart';
 import 'package:flame/sprite.dart';
-// import 'package:flame/text_config.dart';
 import 'package:flutter/gestures.dart';
 
 import 'ball_game.dart';
@@ -15,9 +12,9 @@ class CdTimer extends SpriteComponent {
   final Offset position;
   final double width;
   final double height;
-  // final String lol;
   Stopwatch stopwatch = Stopwatch();
   int loop = 6;
+  int remainingTime = 6;
   bool stopped = false;
   bool paused = false;
 
@@ -35,18 +32,12 @@ class CdTimer extends SpriteComponent {
 
   @override
   void update(double dt) {
-    var remainingTime = loop - (stopwatch.elapsedMilliseconds ~/ 500);
-    // if (remainingTime >= 4) {
-    //   config = TextConfig(color: Color.fromARGB(255, 0, 0, 0));
-    // } else {
-    //   config = TextConfig(color: Color.fromARGB(255, 255, 0, 0));
-    // }
+    remainingTime = loop - (stopwatch.elapsedMilliseconds ~/ 500);
     if (remainingTime <= 0) remainingTime = 0;
     if (remainingTime <= 0 && !paused) {
       game.basicWorld.pause();
       paused = true;
     } 
-    // text = remainingTime.toString();
     sprite = Sprite(remainingTime.toString() + '.png');
     super.update(dt);
   }
@@ -60,6 +51,10 @@ class CdTimer extends SpriteComponent {
   void stopTimer() {
     stopwatch.stop();
     stopped = true;
+  }
+
+  void resume() {
+    stopwatch.start();
   }
 
   void pos() {
