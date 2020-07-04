@@ -39,11 +39,4 @@ class BackgroundWorldcup extends SpriteComponent {
     sprite = Sprite('row-' + (game.score ~/ 10).toString() + '.png')
       ..paint = pain;
   }
-
-  // void updateFlag() {
-  //   ++selected;
-  //   var pain = Paint()..color =  Color.fromRGBO(255, 255, 255, 0.3);
-  //   sprite = Sprite(game.countryList[selected] + '.png')
-  //     ..paint = pain;
-  // }
 }

@@ -31,6 +31,6 @@ class Versus extends TextComponent
   }
 
   void updateVersus() {
-    text = game.selfFlag.selected.toUpperCase() + ' VS ' + game.flags.selectedCountry.toUpperCase();
+    text = game.selfFlag.selected.toUpperCase() + ' vs ' + game.flags.selectedCountry.toUpperCase();
   }
 }

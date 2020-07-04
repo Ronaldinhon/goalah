@@ -23,6 +23,8 @@ import 'pause_cover.dart';
 import 'play_button.dart';
 import 'resume_word.dart';
 import 'versus.dart';
+import 'flags_ripple.dart';
+import 'world_cup_ripple.dart';
 import '../box2d/football.dart';
 import '../box2d/balancer.dart';
 import '../box2d/box2d_world.dart';
@@ -73,6 +75,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   BackgroundWorldcup backWorld;
   PlayButton playButton;
   Versus vs;
+  FlagsRipple flagsRip;
 
   BallGame(size) {
     resize(size);
@@ -98,10 +101,14 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         screenSize.height * 0.03,
         screenSize.height * 0.05,
         Offset(screenSize.width * 0.5, screenSize.height * 0.94)));
+    add(flagsRip = FlagsRipple(
+        this,
+        screenSize.width * 0.23,
+        screenSize.width * 0.14,
+        Offset((screenSize.width * (0.56 + 0.115)) + (countDown.width / 2),
+            (screenSize.height * 0.018) + (screenSize.width * 0.07))));
     add(flags = Flags(
         this,
-        // screenSize.height * 0.104,
-        // screenSize.height * 0.064,
         screenSize.width * 0.23,
         screenSize.width * 0.14,
         Offset((screenSize.width * 0.56) + (countDown.width / 2),
@@ -110,20 +117,26 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         this,
         screenSize.width * 0.23,
         screenSize.width * 0.14,
-        Offset(screenSize.width * 0.96, screenSize.height * 0.87)));
+        Offset(screenSize.width * 0.95, screenSize.height * 0.87)));
     add(backWorld = BackgroundWorldcup(
         this,
         screenSize.height * 0.2,
         screenSize.height * 0,
         Offset(screenSize.width / 2, screenSize.height * 0.8)));
     add(PickCountry(this, screenSize.width * 0.34, screenSize.width * 0.2,
-        Offset(screenSize.width * 0.96, screenSize.height * 0.8)));
+        Offset(screenSize.width * 0.95, screenSize.height * 0.8)));
     add(Arrow(
         this,
         screenSize.width * 0.08,
         screenSize.width * 0.08,
-        Offset(screenSize.width * (0.96 - (0.244 / 2)),
+        Offset(screenSize.width * (0.95 - (0.244 / 2)),
             screenSize.height * 0.858)));
+    add(WorldCupRipple(
+        this,
+        screenSize.width * 0.056,
+        screenSize.width * 0.144,
+        Offset((screenSize.width * (0.96 - 0.244 - 0.028)) - 20,
+            (screenSize.height * 0.87) + (screenSize.width * 0.144 / 2))));
     add(WorldCup(
         this,
         screenSize.width * 0.056,
@@ -211,6 +224,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         selfFlag.area().contains(details.globalPosition)) {
       // status = Status.PendingCountry;
       addWidgetOverlay('dropdown', dropdown());
+      overlayShown = true;
     }
   }
 
@@ -238,8 +252,8 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     }
     if (status == Status.Pause &&
         playButton.area().contains(details.globalPosition)) {
-          resumeGame();
-        }
+      resumeGame();
+    }
     // print('down'); - too bottom & right dont detect very good
   }
 

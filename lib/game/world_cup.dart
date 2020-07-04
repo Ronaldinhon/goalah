@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'dart:ui';
 
 import 'package:flame/anchor.dart';
@@ -6,7 +7,6 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 
 import 'ball_game.dart';
-import 'db_helper.dart';
 
 class WorldCup extends SpriteComponent {
   final BallGame game;

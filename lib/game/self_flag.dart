@@ -56,6 +56,8 @@ class SelfFlag extends SpriteComponent {
     codeList.removeWhere((item) => item == code);
     codeList.shuffle();
     game.countryList = codeList;
+    game.flagsRip.selected = -1;
+    game.flagsRip.updateFlag();
     game.flags.selected = -1;
     game.flags.updateFlag();
     game.vs.updateVersus();

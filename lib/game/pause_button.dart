@@ -28,6 +28,13 @@ class PauseButton extends SpriteComponent {
     super.update(dt);
   }
 
+  @override
+  void render(Canvas c) {
+    if (game.status == Status.Playing && game.score > 0) {
+      super.render(c);
+    }
+  }
+
   Rect area() {
     return Rect.fromLTWH(x - width, y, width, height);
   }

@@ -56,7 +56,7 @@ class StartScore extends SpriteComponent {
 
   @override
   void render(Canvas c) {
-    if (game.status == Status.Playing && game.score == 0) {
+    if (game.status == Status.Playing && game.score == 0 && !game.overlayShown) {
       super.render(c);
     }
   }
