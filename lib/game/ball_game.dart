@@ -25,6 +25,7 @@ import 'resume_word.dart';
 import 'versus.dart';
 import 'flags_ripple.dart';
 import 'world_cup_ripple.dart';
+import 'cd_timer_show.dart';
 import '../box2d/football.dart';
 import '../box2d/balancer.dart';
 import '../box2d/box2d_world.dart';
@@ -100,24 +101,28 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         this,
         screenSize.height * 0.03,
         screenSize.height * 0.05,
-        Offset(screenSize.width * 0.5, screenSize.height * 0.94)));
-    add(flagsRip = FlagsRipple(
-        this,
-        screenSize.width * 0.23,
-        screenSize.width * 0.14,
-        Offset((screenSize.width * (0.56 + 0.115)) + (countDown.width / 2),
-            (screenSize.height * 0.018) + (screenSize.width * 0.07))));
+        Offset(screenSize.width * 0.5, screenSize.height * 0.1)));
     add(flags = Flags(
         this,
         screenSize.width * 0.23,
         screenSize.width * 0.14,
         Offset((screenSize.width * 0.56) + (countDown.width / 2),
             screenSize.height * 0.018)));
+    add(flagsRip = FlagsRipple(
+        this,
+        screenSize.width * 0.23,
+        screenSize.width * 0.14,
+        Offset((screenSize.width * (0.56 + 0.115)) + (countDown.width / 2),
+            (screenSize.height * 0.018) + (screenSize.width * 0.07))));
     add(selfFlag = SelfFlag(
         this,
         screenSize.width * 0.23,
         screenSize.width * 0.14,
         Offset(screenSize.width * 0.95, screenSize.height * 0.87)));
+    add(CdTimerShow(this,
+        screenSize.height * 0.09,
+        screenSize.height * 0.15,
+        Offset(screenSize.width * 0.5, screenSize.height * 0.3)));
     add(backWorld = BackgroundWorldcup(
         this,
         screenSize.height * 0.2,
@@ -131,18 +136,18 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         screenSize.width * 0.08,
         Offset(screenSize.width * (0.95 - (0.244 / 2)),
             screenSize.height * 0.858)));
-    add(WorldCupRipple(
-        this,
-        screenSize.width * 0.056,
-        screenSize.width * 0.144,
-        Offset((screenSize.width * (0.96 - 0.244 - 0.028)) - 20,
-            (screenSize.height * 0.87) + (screenSize.width * 0.144 / 2))));
     add(WorldCup(
         this,
         screenSize.width * 0.056,
         screenSize.width * 0.144,
         Offset((screenSize.width * (0.96 - 0.244)) - 20,
             screenSize.height * 0.87)));
+    add(WorldCupRipple(
+        this,
+        screenSize.width * 0.056,
+        screenSize.width * 0.144,
+        Offset((screenSize.width * (0.96 - 0.244 - 0.028)) - 20,
+            (screenSize.height * 0.87) + (screenSize.width * 0.144 / 2))));
     add(cover = Cover(
         this,
         screenSize.width * 0.056,

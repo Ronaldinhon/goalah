@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print('HeredidChangeAppLifecycleStatedidChangeAppLifecycleState');
+    // print('HeredidChangeAppLifecycleStatedidChangeAppLifecycleState');
     if (state == AppLifecycleState.paused) {
       if (_myGame.status == Status.Playing && _myGame.score > 0)
         _myGame.pauseGame();

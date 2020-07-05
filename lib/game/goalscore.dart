@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flame/anchor.dart';
 import 'package:flame/components/component.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/gestures.dart';
 
@@ -37,11 +38,11 @@ class Goalscore extends SpriteComponent {
     if (score && !scored) {
       ++game.score;
       scored = true;
+      Flame.audio.play('goal_robot.mp3');
       game.basicWorld.goalpost.tele = true;
       game.countDown.stopTimer();
       game.cover.updateCover();
       game.backWorld.updateHeight();
-      // Flame.audio.play *ding
     }
     super.update(dt);
   }

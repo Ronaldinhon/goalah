@@ -28,7 +28,6 @@ class SelfFlag extends SpriteComponent {
 
   @override
   void update(double dt) {
-    // print(game.status);
     super.update(dt);
   }
 
