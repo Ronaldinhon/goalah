@@ -47,12 +47,17 @@ class Pointer extends SpriteComponent {
       y += toTarget.dy;
       setTargetLocation();
     }
-    if (game.score > 0) troy = true;
+    if (game.score > 0) {
+      game.setCountryValue();
+      troy = true;
+    }
     super.update(dt);
   }
 
   void render(Canvas c) {
-    if (game.status == Status.Playing && game.score == 0 && !game.overlayShown) {
+    if (game.status == Status.Playing &&
+        game.score == 0 &&
+        !game.overlayShown) {
       c.drawLine(
           offsets[0] - Offset(0, height / 2),
           offsets[1] - Offset(0, height / 2),

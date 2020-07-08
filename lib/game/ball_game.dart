@@ -42,7 +42,7 @@ enum Status {
   Playing,
   Pause,
   Lost,
-  Win,
+  Won,
 }
 
 class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
@@ -77,6 +77,14 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
   PlayButton playButton;
   Versus vs;
   FlagsRipple flagsRip;
+  WorldCup wc;
+  List<Map<String, dynamic>> achieveData = List<Map<String, dynamic>>();
+  List<DataRow> achievements = List<DataRow>();
+
+  String currentCountry;
+  int highScore;
+  int worldCup;
+  int sentWorldCup;
 
   BallGame(size) {
     resize(size);
@@ -119,9 +127,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         screenSize.width * 0.23,
         screenSize.width * 0.14,
         Offset(screenSize.width * 0.95, screenSize.height * 0.87)));
-    add(CdTimerShow(this,
-        screenSize.height * 0.09,
-        screenSize.height * 0.15,
+    add(CdTimerShow(this, screenSize.height * 0.09, screenSize.height * 0.15,
         Offset(screenSize.width * 0.5, screenSize.height * 0.3)));
     add(backWorld = BackgroundWorldcup(
         this,
@@ -136,7 +142,7 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         screenSize.width * 0.08,
         Offset(screenSize.width * (0.95 - (0.244 / 2)),
             screenSize.height * 0.858)));
-    add(WorldCup(
+    add(wc = WorldCup(
         this,
         screenSize.width * 0.056,
         screenSize.width * 0.144,
@@ -203,6 +209,8 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
         this,
         Offset(screenSize.width / 2,
             (screenSize.height * 0.5) + (playButton.height / 2) + 15)));
+
+    getAchieveList();
   }
 
   void resize(Size size) {
@@ -224,12 +232,16 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     initialBalOffset = balance.bodyPos;
     initialDrag = details.globalPosition;
     currentDrag = details.globalPosition;
-    if ((status == Status.PendingCountry ||
-            (status == Status.Playing && score == 0)) &&
-        selfFlag.area().contains(details.globalPosition)) {
+    if (status == Status.PendingCountry ||
+        (status == Status.Playing && score == 0)) {
       // status = Status.PendingCountry;
-      addWidgetOverlay('dropdown', dropdown());
-      overlayShown = true;
+      if (selfFlag.area().contains(details.globalPosition)) {
+        addWidgetOverlay('dropdown', dropdown());
+        overlayShown = true;
+      } else if (wc.area().contains(details.globalPosition)) {
+        addWidgetOverlay('achievement', achievement());
+        overlayShown = true;
+      }
     }
   }
 
@@ -274,55 +286,193 @@ class BallGame extends BaseGame with PanDetector, HasWidgetsOverlay {
     status = Status.Playing;
   }
 
+  Future<void> setCountryValue() async {
+    final dataList = await DBHelper.getAchieve(currentCountry);
+    if (dataList.isNotEmpty) {
+      highScore = dataList[0]['high_score'];
+      worldCup = dataList[0]['worldcup'];
+      sentWorldCup = dataList[0]['sent_worldcup'];
+    }
+  }
+
+  void saveScore() {
+    if (highScore == null || score > highScore) {
+      highScore = score;
+    }
+    worldCup ??= 0;
+    sentWorldCup ??= 0;
+    if (score == 210) ++worldCup;
+    DBHelper.insertAchieve('achieve', {
+      'id': currentCountry,
+      'high_score': highScore,
+      'worldcup': worldCup,
+      'sent_worldcup': sentWorldCup
+    });
+  }
+
+  void saveWinning() {
+    basicWorld.pause();
+    worldCup ??= 0;
+    sentWorldCup ??= 0;
+    if (score == 210) ++worldCup;
+    DBHelper.insertAchieve('achieve', {
+      'id': currentCountry,
+      'high_score': 210,
+      'worldcup': worldCup,
+      'sent_worldcup': sentWorldCup
+    });
+    status = Status.Won;
+  }
+
   Widget dropdown() {
     return Center(
       child: Card(
         child: Container(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
           decoration: BoxDecoration(
               border: Border.all(width: 1, color: Colors.grey),
               borderRadius: BorderRadius.circular(5)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Expanded(
-                child: DropdownButtonHideUnderline(
-                  child: ButtonTheme(
-                    alignedDropdown: true,
-                    child: DropdownButton<String>(
-                      isDense: true,
-                      hint: Text("Select Country"),
-                      // value: selfFlag.selected,
-                      value: null,
-                      onChanged: (String newValue) {
-                        selfFlag.setFlag(newValue);
+              Container(
+                height: 40,
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: CloseButton(
+                      onPressed: () {
                         removeWidgetOverlay('dropdown');
                         overlayShown = false;
                       },
-                      items: myJson().map((Map map) {
-                        return new DropdownMenuItem<String>(
-                          value: map["id"].toString(),
-                          child: Row(
-                            children: <Widget>[
-                              Image.asset(
-                                map["image"],
-                                width: 25,
+                    )),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: DropdownButtonHideUnderline(
+                      child: ButtonTheme(
+                        alignedDropdown: true,
+                        child: DropdownButton<String>(
+                          isDense: true,
+                          hint: Text("Select Country"),
+                          // value: selfFlag.selected,
+                          value: null,
+                          onChanged: (String newValue) {
+                            selfFlag.setFlag(newValue);
+                            removeWidgetOverlay('dropdown');
+                            overlayShown = false;
+                          },
+                          items: myJson().map((Map map) {
+                            return new DropdownMenuItem<String>(
+                              value: map["id"].toString(),
+                              child: Row(
+                                children: <Widget>[
+                                  Image.asset(
+                                    map["image"],
+                                    width: 25,
+                                  ),
+                                  Container(
+                                      margin: EdgeInsets.only(left: 10),
+                                      child: Text(map["name"])),
+                                ],
                               ),
-                              Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Text(map["name"])),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget achievement() {
+    return Center(
+      child: Card(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+          decoration: BoxDecoration(
+              border: Border.all(width: 1, color: Colors.grey),
+              borderRadius: BorderRadius.circular(5)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                height: 25,
+                child: Align(
+                    alignment: Alignment.topRight,
+                    child: CloseButton(
+                      onPressed: () {
+                        removeWidgetOverlay('achievement');
+                        overlayShown = false;
+                      },
+                    )),
+              ),
+              SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: DataTable(
+                    columns: <DataColumn>[
+                      DataColumn(
+                        label: Text('Country'),
+                        numeric: false,
+                      ),
+                      DataColumn(
+                        label: Text('High Score'),
+                        numeric: true,
+                      ),
+                      DataColumn(
+                        label: Image.asset(
+                          'assets/images/worldcup.png',
+                          height: 25,
+                        ),
+                        numeric: true,
+                      ),
+                    ],
+                    rows: achievements,
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> getAchieveList() async {
+    achieveData = await DBHelper.getAllAchieve();
+    achievements = List<DataRow>();
+    achieveData.forEach((f) {
+      achievements.add(DataRow(cells: <DataCell>[
+        DataCell(Row(
+          children: <Widget>[
+            Image.asset('assets/images/' + f['id'] + '.png', width: 30),
+            Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Text(f['id'].toUpperCase())),
+          ],
+        )),
+        DataCell(Text(f['high_score'].toString())),
+        DataCell(Text(f['worldcup'].toString())),
+      ]));
+    });
+    // achievements = achieveData.map((data) {
+    //   DataRow(cells: <DataCell>[
+    //     DataCell(Row(
+    //       children: <Widget>[
+    //         Image.asset('assets/images/' + 'mas' + '.png', width: 30),
+    //         Container(
+    //             margin: EdgeInsets.only(left: 10),
+    //             child: Text(data['id'].toUpperCase())),
+    //       ],
+    //     )),
+    //     DataCell(Text('mas'.toString())),
+    //     DataCell(Text('mas'.toString())),
+    //   ]);
+    // }).toList();
   }
 }

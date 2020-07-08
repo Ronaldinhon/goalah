@@ -29,6 +29,6 @@ class WorldCup extends SpriteComponent {
   }
 
   Rect area() {
-    return Rect.fromLTWH(x - width, y - height, width, height);
+    return Rect.fromLTWH(x - width, y, width, height);
   }
 }

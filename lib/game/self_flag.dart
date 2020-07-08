@@ -60,6 +60,7 @@ class SelfFlag extends SpriteComponent {
     game.flags.selected = -1;
     game.flags.updateFlag();
     game.vs.updateVersus();
+    game.currentCountry = code;
   }
 
   Rect area() {

@@ -44,6 +44,9 @@ class Goalscore extends SpriteComponent {
       game.cover.updateCover();
       game.backWorld.updateHeight();
     }
+    if (game.score == 210) {
+      game.saveWinning();
+    }
     super.update(dt);
   }
 

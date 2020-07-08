@@ -31,6 +31,6 @@ class PauseCover extends SpriteComponent {
 
   @override
   void render(Canvas c) {
-    if (game.status == Status.Pause) super.render(c);
+    if ([Status.Pause, Status.Won, Status.Lost].contains(game.status)) super.render(c);
   }
 }

@@ -39,6 +39,8 @@ class CdTimer extends SpriteComponent {
       Flame.audio.play('whistle.mp3');
       game.basicWorld.pause();
       paused = true;
+      game.status = Status.Lost;
+      game.saveScore();
     } 
     sprite = Sprite(remainingTime.toString() + '.png');
     super.update(dt);
